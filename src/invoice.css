@@ -1,0 +1,665 @@
+/* --- MUUTTUJAT JA PERUSASETUKSET --- */
+:root {
+    --bg-gray: #f8fafc;
+    --paper-white: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --accent-color: #0f172a;
+    --border-color: #e2e8f0;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    --success: #10b981;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: var(--bg-gray);
+    color: var(--text-main);
+}
+
+.no-print {
+    display: flex !important;
+}
+
+/* Oletus näytöllä */
+.print-only {
+    display: none !important;
+}
+
+/* --- RAKENNE --- */
+.invoice-page {
+    padding: 30px 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.invoice-content {
+    background: var(--paper-white);
+    width: 210mm;
+    min-height: 297mm;
+    position: relative;
+    padding: 15mm 10mm 10mm 15mm;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hallintapalkki */
+.invoice-actions-bar {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    top: -10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.action-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* --- YLÄOSA --- */
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    min-height: 85mm;
+}
+
+.logo-section {
+    flex: 1;
+}
+
+.logo-wrapper-fixed {
+    position: absolute;
+    top: 15mm;
+    left: 15mm;
+    width: 90mm;
+    height: 30mm;
+    display: flex;
+    align-items: center;
+}
+
+.invoice-logo {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.logo-upload-zone {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.logo-wrapper-fixed:hover .logo-upload-zone {
+    opacity: 1;
+}
+
+.logo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #f1f5f9;
+    border: 1px dashed #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.customer-info-box-fixed {
+    position: absolute;
+    top: 50mm;
+    left: 15mm;
+    width: 90mm;
+}
+
+.customer-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.customer-field {
+    font-size: 1rem;
+    outline: none;
+    min-height: 1.2em;
+    padding: 2px 0;
+}
+
+.customer-row-flex {
+    display: flex;
+    gap: 8px;
+}
+
+.zip-field {
+    min-width: 50px;
+}
+
+.city-field {
+    flex-grow: 1;
+}
+
+.invoice-header-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.invoice-title {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 5px;
+    width: 320px;
+}
+
+.info-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.info-value {
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+.editable-input {
+    text-align: right;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 2px 4px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.editable-input:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.unit-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 4px;
+}
+
+.highlight {
+    color: var(--accent-color);
+    font-weight: 800;
+}
+
+/* --- TUOTETAULUKKO --- */
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.invoice-table th {
+    border-bottom: 2px solid var(--accent-color);
+    padding: 8px 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+}
+
+.invoice-table td {
+    padding: 4px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+}
+
+.col-desc {
+    width: 45%;
+}
+
+.col-align-right {
+    text-align: right !important;
+}
+
+.col-align-center {
+    text-align: center !important;
+}
+
+.col-unit {
+    width: 60px;
+}
+
+.col-total {
+    text-align: right;
+    font-weight: bold;
+    width: 100px;
+}
+
+.table-input {
+    width: 100%;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.table-input:hover,
+.table-input:focus {
+    background: white;
+    border-color: var(--border-color);
+}
+
+.unit-input-combobox {
+    width: 100%;
+    border: none;
+    border-bottom: 1px dashed var(--border-color);
+    background: transparent;
+}
+
+.add-row-container {
+    margin-top: 15px;
+}
+
+.btn-add-row {
+    background: transparent;
+    border: 1px dashed #cbd5e1;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.btn-add-row:hover {
+    background: #f1f5f9;
+}
+
+/* --- LISÄTIEDOT & YHTEENVETO --- */
+.notes-area-wrapper {
+    margin-top: 20px;
+}
+
+.notes-editor {
+    min-height: 60px;
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed transparent;
+    outline: none;
+    white-space: pre-wrap;
+    transition: 0.2s;
+}
+
+.notes-editor:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.summary-container {
+    margin-top: 30px;
+    align-self: flex-end;
+    width: 350px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+}
+
+.discount-text {
+    color: var(--danger);
+    font-size: 0.9rem;
+}
+
+.vat-summary-section {
+    border-top: 1px solid var(--border-color);
+    margin-top: 10px;
+    padding-top: 5px;
+}
+
+.vat-summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.total-bold {
+    font-weight: 800;
+    font-size: 1.4rem;
+    border-top: 2px solid var(--accent-color);
+    padding-top: 10px;
+    margin-top: 5px;
+}
+
+/* --- MAKSUTIEDOT --- */
+.invoice-footer-container {
+    margin-top: auto;
+    padding-top: 30px;
+}
+
+.payment-summary-box {
+    display: grid;
+    border: 1px solid var(--border-color);
+    background: var(--bg-gray);
+    border-radius: 4px;
+}
+
+.triple-col-grid {
+    grid-template-columns: 1.2fr 1.2fr 1fr;
+}
+
+.payment-col {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment-col.border-left {
+    border-left: 1px solid var(--border-color);
+}
+
+.payment-col.text-right {
+    text-align: right;
+    align-items: flex-end;
+}
+
+.payment-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-item .label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.payment-item .value {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.editable-input-bold {
+    font-size: 1rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+.editable-input-bold:hover {
+    background: white;
+    border-color: #ccc;
+}
+
+.mt-auto {
+    margin-top: auto;
+}
+
+/* --- VIIVAKOODI & YHTEYSTIEDOT --- */
+.barcode-section {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.barcode-label {
+    font-size: 0.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.barcode-string {
+    font-family: monospace;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.company-info-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+}
+
+.info-col {
+    flex: 1;
+}
+
+.info-heading {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.info-text-box {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* --- PAINIKKEET JA STAMP --- */
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.btn-remove-logo {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+    color: var(--danger);
+}
+
+.delete-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.customer-select {
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.stamp {
+    display: none;
+    position: absolute;
+    top: 60mm;
+    right: 30mm;
+    border: 6px double;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 10px 30px;
+    transform: rotate(-20deg);
+    opacity: 0.15;
+    z-index: 10;
+    pointer-events: none;
+}
+
+[data-status="paid"] .stamp {
+    display: block;
+    color: var(--success);
+    border-color: var(--success);
+}
+
+[data-status="overdue"] .stamp {
+    display: block;
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* Kielen valinta */
+.lang-selector {
+  display: flex;
+  gap: 2px;
+  background: #e2e8f0;
+  padding: 2px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.btn-lang {
+  border: none;
+  background: transparent;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 3px;
+  color: var(--text-muted);
+}
+
+.btn-lang.active {
+  background: white;
+  color: var(--accent-color);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* --- TULOSTUSASETUKSET --- */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        background: white;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+
+    .invoice-page {
+        padding: 0;
+    }
+
+    .invoice-content {
+        box-shadow: none;
+        padding: 15mm 15mm 15mm 20mm;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .customer-info-box-fixed {
+        top: 40mm !important;
+    }
+
+    .logo-wrapper-fixed {
+        top: 10mm !important;
+    }
+
+    .invoice-table tr {
+        page-break-inside: avoid;
+    }
+
+    .payment-summary-box {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background-color: #f1f5f9 !important;
+    }
+
+    input,
+    textarea,
+    select {
+        border: none !important;
+        background: transparent !important;
+        color: black !important;
+    }
+
+    .lang-selector { display: none !important; }
+}
